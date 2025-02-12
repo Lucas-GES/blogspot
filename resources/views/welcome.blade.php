@@ -908,61 +908,41 @@
 
 <body class="bg-gray-800">
     <header>
-        <div class="mx-auto max-w-8xl px-2 sm:px-6 lg:px-8 border-b">
-            <div class="relative flex h-16 items-center justify-between">
-                <div class="flex shrink-0 items-center">
-                    <img class="h-12" src="./img/blog.png" alt="blog_icon">
-                </div>
-                <div>
-                    @if (Route::has('login'))
-                        <nav class="-mx-3 flex flex-1 justify-end">
-                            @auth
-                                <a href="{{ url('/dashboard') }}"
-                                    class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
-                                    Dashboard
-                                </a>
-                            @else
-                                <a href="{{ route('login') }}"
-                                    class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
-                                    Log in
-                                </a>
-
-                                @if (Route::has('register'))
-                                    <a href="{{ route('register') }}"
-                                        class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
-                                        Register
-                                    </a>
-                                @endif
-                            @endauth
-                        </nav>
-                    @endif
-                </div>
-            </div>
-        </div>
+        <x-header-nav />
     </header>
     <main class="flex">
-        <div class="ms-4">
-            @for ($i = 0; $i < 5; $i++)
-                <x-card-post title="Post {{ $i + 1 }}" description="Some description" card_width="w-[1000px]" />
-            @endfor
-        </div>
+        @if ($posts !== null)
+            <div class="ms-4">
+                @for ($i = 0; $i < 5; $i++)
+                    <x-card-post title="Post {{ $i + 1 }}" description="Some description" card_width="w-[1000px]" />
+                @endfor
+            </div>
+        @else
+            <div class="ms-4 w-[2500px] justify-items-center">
+                <h1 class="mt-64 font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">There aren't posts yet...</h1>
+            </div>
+        @endif
         <div class="ms-4 mt-4 border border-gray-700 rounded-lg w-[750px] h-[500px] overflow-auto no-scrollbar">
             <div class="text-center mt-4">
                 <h1 class="text-white">Posts by Month:</h1>
             </div>
             <div class="ml-10 mt-4 text-white">
-                @for ($i = 0; $i < 5; $i++)
-                    <details>
-                        <summary>{{ date('Y/m') }}</summary>
-                        <ul class="ml-8">
-                            @for ($j = 0; $j < 5; $j++)
-                                <li>
-                                    Post N°{{ $j }}
-                                </li>
-                            @endfor
-                        </ul>
-                    </details>
-                @endfor
+                @if ($posts !== null)
+                    @for ($i = 0; $i < 5; $i++)
+                        <details>
+                            <summary>{{ date('Y/m') }}</summary>
+                            <ul class="ml-8">
+                                @for ($j = 0; $j < 5; $j++)
+                                    <li>
+                                        Post N°{{ $j }}
+                                    </li>
+                                @endfor
+                            </ul>
+                        </details>
+                    @endfor
+                @else
+                    <div></div>
+                @endif
             </div>
         </div>
     </main>
